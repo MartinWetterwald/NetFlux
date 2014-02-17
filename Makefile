@@ -8,8 +8,15 @@ OBJDIR = $(BUILDDIR)obj/
 DEPDIR = $(BUILDDIR)dep/
 LIB = $(BINDIR)$(LIBNAME)
 
-CC = @g++
-CFLAGS = -Wall -Wextra -Werror -g3 -O0
+CC = @clang++
+
+CFLAGS = -std=c++03 -Weverything -Wno-padded
+ifneq ($(MODE),release)
+CFLAGS += -g -O0
+else
+CFLAGS += -Werror -g0 -O3
+endif
+
 AR = @ar rs
 
 SRC = $(shell find $(SRCDIR) -iname "*.cpp")
