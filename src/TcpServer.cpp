@@ -10,33 +10,32 @@ namespace NetFlux
     {
     }
 
-    bool TcpServer::open ( unsigned short port )
+    bool TcpServer::open ( uint16_t port, uint32_t interface, int backlog )
     {
-        if ( msocket )
+        if ( msocket != INVALID )
         {
             return false;
         }
 
-        msocket = socket ( AF_INET, SOCK_DGRAM, 0 );
-        if ( ! msocket )
+        msocket = socket ( AF_INET, SOCK_STREAM, 0 );
+        if ( msocket == INVALID )
         {
             return false;
         }
 
-        struct sockaddr_in sin;
-        sin.sin_family = AF_INET;
-        sin.sin_port = htons ( port );
-        sin.sin_addr.s_addr = htonl ( INADDR_ANY );
+        msin.sin_family = AF_INET;
+        msin.sin_port = htons ( port );
+        msin.sin_addr.s_addr = htonl ( interface );
 
         int ret;
-        ret = bind ( msocket, ( struct sockaddr * ) &sin, sizeof ( struct sockaddr_in ) );
+        ret = bind ( msocket, ( struct sockaddr * ) &msin, sizeof ( msin ) );
         if ( ret == -1 )
         {
             close ( );
             return false;
         }
 
-        ret = listen ( msocket, 10 );
+        ret = listen ( msocket, backlog );
         if ( ret == -1 )
         {
             close ( );

@@ -11,7 +11,7 @@ namespace NetFlux
         TcpServer ( );
         virtual ~TcpServer ( );
 
-        bool open ( unsigned short port );
+        bool open ( uint16_t port, uint32_t interface = INADDR_ANY, int backlog = 10 );
     };
 }
 

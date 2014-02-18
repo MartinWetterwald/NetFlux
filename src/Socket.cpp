@@ -12,7 +12,7 @@ namespace NetFlux
 
     Socket::~Socket ( )
     {
-        if ( msocket )
+        if ( msocket != INVALID )
         {
             ::close ( msocket );
         }
@@ -20,7 +20,7 @@ namespace NetFlux
 
     bool Socket::close ( )
     {
-        if ( ! msocket )
+        if ( msocket == INVALID )
         {
             return false;
         }

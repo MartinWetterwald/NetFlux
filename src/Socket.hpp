@@ -12,7 +12,7 @@ namespace NetFlux
         Socket ( int socket );
         virtual ~Socket ( );
 
-        inline operator bool ( )
+        inline operator bool ( ) const
         {
             return ( msocket != INVALID );
         }
@@ -22,6 +22,7 @@ namespace NetFlux
 
     protected:
         int msocket;
+        struct sockaddr_in msin;
 
         static const int INVALID = -1;
     };
