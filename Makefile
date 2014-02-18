@@ -29,7 +29,7 @@ DEP = $(wildcard $(DEPDIR)*.d)
 ifneq ($(words $(OBJ)),0)
 $(LIB): $(OBJ)
 	@mkdir -p $(BINDIR)
-	@printf "%-13s <$@>...\n" "Building static library"
+	@printf "%-13s <$@>...\n" "Building lib"
 	$(AR) $@ $(OBJ) > /dev/null 2>&1
 	@ln -sf $(LIB) $(LIBNAME)
 else
