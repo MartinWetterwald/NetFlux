@@ -12,6 +12,11 @@ namespace NetFlux
         Socket ( int socket );
         virtual ~Socket ( );
 
+        inline operator bool ( )
+        {
+            return ( msocket != INVALID );
+        }
+
         bool close ( );
 
 
