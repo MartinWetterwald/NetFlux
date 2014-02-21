@@ -22,7 +22,7 @@ namespace NetFlux
 
     protected:
         int msocket;
-        struct sockaddr_in msin;
+        struct sockaddr msin;
 
         static const int INVALID = -1;
     };

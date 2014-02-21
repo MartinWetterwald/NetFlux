@@ -12,7 +12,7 @@ CC = @clang++
 
 CFLAGS = -std=c++03 -Weverything -Wno-padded -Wno-disabled-macro-expansion
 ifneq ($(MODE),release)
-CFLAGS += -g -O0
+CFLAGS += -DDEBUG -g -O0
 else
 CFLAGS += -Werror -g0 -O3
 endif
