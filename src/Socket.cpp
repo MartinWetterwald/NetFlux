@@ -6,7 +6,8 @@ namespace NetFlux
     {
     }
 
-    Socket::Socket ( int socket ) : msocket ( socket )
+    Socket::Socket ( int socket, const struct sockaddr & sin )
+        : msocket ( socket ), msin ( sin )
     {
     }
 

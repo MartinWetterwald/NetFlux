@@ -10,21 +10,8 @@
 
 namespace NetFlux
 {
-    TcpServer::TcpServer ( )
+    TcpServer * TcpServer::Create ( uint16_t port )
     {
-    }
-
-    TcpServer::~TcpServer ( )
-    {
-    }
-
-    bool TcpServer::listen ( uint16_t port, int backlog )
-    {
-        if ( msocket != INVALID )
-        {
-            return false;
-        }
-
         // We convert the unsigned short port into C string.
         char port_str [ 6 ];
         int ret = snprintf ( port_str, 6, "%hu", port );
@@ -46,15 +33,16 @@ namespace NetFlux
             std::cout << "NetFlux::TcpServer::listen (getaddrinfo): "
                 << gai_strerror ( ret ) << std::endl;
 #endif
-            return false;
+            return 0;
         }
 
+        int sockfd;
+
         // We try each config
-        bool found = false;
         for ( struct addrinfo * current = config_list ; current -> ai_next != 0 ; ++current )
         {
-            msocket = socket ( current -> ai_family, current -> ai_socktype, current -> ai_protocol );
-            if ( msocket == INVALID )
+            sockfd = socket ( current -> ai_family, current -> ai_socktype, current -> ai_protocol );
+            if ( sockfd == INVALID )
             {
 #ifdef DEBUG
                 perror ( "NetFlux::TcpServer::listen (socket)" );
@@ -62,30 +50,37 @@ namespace NetFlux
                 continue;
             }
 
-            ret = bind ( msocket, current -> ai_addr, sizeof ( struct sockaddr ) );
+            ret = bind ( sockfd, current -> ai_addr, sizeof ( struct sockaddr ) );
             if ( ret == -1 )
             {
 #ifdef DEBUG
                 perror ( "NetFlux::TcpServer::listen (bind)" );
 #endif
-                close ( );
+                ::close ( sockfd );
                 continue;
             }
 
-            found = true;
-            break;
+            // Everything is fine. We can allocate the TcpServer.
+            TcpServer * tcpServer = new TcpServer ( sockfd, * current -> ai_addr );
+            freeaddrinfo ( config_list );
+            return tcpServer;
         }
-        freeaddrinfo ( config_list );
 
-        if ( ! found )
-        {
+        // We haven't found any suitable config.
 #ifdef DEBUG
-            std::cout << "Netflux::TcpServer::listen (getaddrinfo): didn't return any config matching given hints." << std::endl;
+        std::cout << "Netflux::TcpServer::listen (getaddrinfo): didn't return any config matching given hints." << std::endl;
 #endif
-            return false;
-        }
+        freeaddrinfo ( config_list );
+        return 0;
+    }
 
-        ret = ::listen ( msocket, backlog );
+    TcpServer::~TcpServer ( )
+    {
+    }
+
+    bool TcpServer::listen ( int backlog )
+    {
+        int ret = ::listen ( msocket, backlog );
         if ( ret == -1 )
         {
 #ifdef DEBUG
@@ -96,5 +91,10 @@ namespace NetFlux
         }
 
         return true;
+    }
+
+    TcpServer::TcpServer ( int sock, const struct sockaddr & sin )
+        : Socket::Socket ( sock, sin )
+    {
     }
 }

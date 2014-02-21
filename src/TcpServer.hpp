@@ -8,10 +8,13 @@ namespace NetFlux
     class TcpServer : public Socket
     {
     public:
-        TcpServer ( );
+        static TcpServer * Create ( uint16_t port );
         virtual ~TcpServer ( );
 
-        bool listen ( uint16_t port, int backlog = 10 );
+        bool listen ( int backlog = 10 );
+
+    protected:
+        TcpServer ( int sock, const struct sockaddr & sin );
     };
 }
 

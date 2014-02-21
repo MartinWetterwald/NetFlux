@@ -9,7 +9,7 @@ namespace NetFlux
     {
     public:
         Socket ( );
-        Socket ( int socket );
+        Socket ( int socket, const struct sockaddr & sin );
         virtual ~Socket ( );
 
         inline operator bool ( ) const
