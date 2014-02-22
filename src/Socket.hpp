@@ -1,7 +1,6 @@
 #ifndef _SOCKET_HPP_
 #define _SOCKET_HPP_
 
-#include "libs.hpp"
 #include "InetAddress.hpp"
 
 namespace NetFlux
