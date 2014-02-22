@@ -17,15 +17,15 @@ namespace NetFlux
         int ret = snprintf ( port_str, 6, "%hu", port );
 
         // We give hints on what kinds of socket configs we are looking for.
-        struct addrinfo hints;
-        memset ( &hints, 0, sizeof ( struct addrinfo ) );
+        addrinfo hints;
+        memset ( &hints, 0, sizeof ( addrinfo ) );
         hints.ai_family = AF_UNSPEC;
         hints.ai_socktype = SOCK_STREAM;
         hints.ai_protocol = IPPROTO_TCP;
         hints.ai_flags = ( AI_PASSIVE | AI_NUMERICSERV );
 
         // We get the socket configs list
-        struct addrinfo * config_list;
+        addrinfo * config_list;
         ret = getaddrinfo ( 0, port_str, &hints, &config_list );
         if ( ret != 0 )
         {
@@ -39,7 +39,7 @@ namespace NetFlux
         int sockfd;
 
         // We try each config
-        for ( struct addrinfo * current = config_list ; current -> ai_next != 0 ; ++current )
+        for ( addrinfo * current = config_list ; current -> ai_next != 0 ; ++current )
         {
             sockfd = socket ( current -> ai_family, current -> ai_socktype, current -> ai_protocol );
             if ( sockfd == INVALID )
@@ -50,7 +50,7 @@ namespace NetFlux
                 continue;
             }
 
-            ret = bind ( sockfd, current -> ai_addr, sizeof ( struct sockaddr ) );
+            ret = bind ( sockfd, current -> ai_addr, sizeof ( sockaddr ) );
             if ( ret == -1 )
             {
 #ifdef DEBUG
