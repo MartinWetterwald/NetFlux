@@ -80,6 +80,11 @@ namespace NetFlux
 
     bool TcpServer::listen ( int backlog )
     {
+        if ( ! * this )
+        {
+            return false;
+        }
+
         int ret = ::listen ( msocket, backlog );
         if ( ret == -1 )
         {
@@ -94,7 +99,5 @@ namespace NetFlux
     }
 
     TcpServer::TcpServer ( int sock, const InetAddress & address )
-        : Socket::Socket ( sock, address )
-    {
-    }
+        : Socket::Socket ( sock, address ) { }
 }

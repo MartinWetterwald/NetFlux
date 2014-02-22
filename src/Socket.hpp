@@ -16,7 +16,7 @@ namespace NetFlux
             return ( msocket != INVALID );
         }
 
-        bool getAddress ( std::string & str );
+        bool getAddress ( std::string & str ) const;
         bool close ( );
 
 

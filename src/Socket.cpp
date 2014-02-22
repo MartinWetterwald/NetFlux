@@ -13,7 +13,7 @@ namespace NetFlux
         }
     }
 
-    bool Socket::getAddress ( std::string & str )
+    bool Socket::getAddress ( std::string & str ) const
     {
         return maddress.ipToString ( str );
     }

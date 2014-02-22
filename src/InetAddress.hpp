@@ -15,7 +15,7 @@ namespace NetFlux
         InetAddress ( const sockaddr_in & sin );
         InetAddress ( const sockaddr_in6 & sin6 );
 
-        bool ipToString ( std::string & str );
+        bool ipToString ( std::string & str ) const;
     };
 }
 
