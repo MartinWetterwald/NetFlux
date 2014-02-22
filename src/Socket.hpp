@@ -2,6 +2,7 @@
 #define _SOCKET_HPP_
 
 #include "libs.hpp"
+#include "InetAddress.hpp"
 
 namespace NetFlux
 {
@@ -9,7 +10,7 @@ namespace NetFlux
     {
     public:
         Socket ( );
-        Socket ( int socket, const struct sockaddr & sin );
+        Socket ( int socket, const InetAddress & address );
         virtual ~Socket ( );
 
         inline operator bool ( ) const
@@ -17,12 +18,13 @@ namespace NetFlux
             return ( msocket != INVALID );
         }
 
+        bool getAddressString ( std::string & str );
         bool close ( );
 
 
     protected:
         int msocket;
-        struct sockaddr msin;
+        InetAddress maddress;
 
         static const int INVALID = -1;
     };

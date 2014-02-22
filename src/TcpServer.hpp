@@ -14,7 +14,7 @@ namespace NetFlux
         bool listen ( int backlog = 10 );
 
     protected:
-        TcpServer ( int sock, const struct sockaddr & sin );
+        TcpServer ( int sock, const InetAddress & address );
     };
 }
 

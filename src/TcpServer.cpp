@@ -93,8 +93,8 @@ namespace NetFlux
         return true;
     }
 
-    TcpServer::TcpServer ( int sock, const struct sockaddr & sin )
-        : Socket::Socket ( sock, sin )
+    TcpServer::TcpServer ( int sock, const InetAddress & address )
+        : Socket::Socket ( sock, address )
     {
     }
 }

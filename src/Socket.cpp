@@ -6,8 +6,8 @@ namespace NetFlux
     {
     }
 
-    Socket::Socket ( int socket, const struct sockaddr & sin )
-        : msocket ( socket ), msin ( sin )
+    Socket::Socket ( int socket, const InetAddress & address )
+        : msocket ( socket ), maddress ( address )
     {
     }
 
@@ -17,6 +17,11 @@ namespace NetFlux
         {
             ::close ( msocket );
         }
+    }
+
+    bool Socket::getAddressString ( std::string & str )
+    {
+        return maddress.ipToString ( str );
     }
 
     bool Socket::close ( )
