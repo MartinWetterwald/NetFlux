@@ -10,7 +10,7 @@ LIB = $(BINDIR)$(LIBNAME)
 
 CC = @clang++
 
-CFLAGS = -std=c++03 -Weverything -Wno-padded -Wno-disabled-macro-expansion
+CFLAGS = -std=c++11 -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-c++98-compat
 ifneq ($(MODE),release)
 CFLAGS += -DDEBUG -g -O0
 else
