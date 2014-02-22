@@ -8,7 +8,6 @@ namespace NetFlux
     class Socket
     {
     public:
-        Socket ( );
         Socket ( int socket, const InetAddress & address );
         virtual ~Socket ( );
 
@@ -22,6 +21,8 @@ namespace NetFlux
 
 
     protected:
+        Socket ( );
+
         int msocket;
         InetAddress maddress;
 

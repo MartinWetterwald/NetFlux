@@ -2,14 +2,9 @@
 
 namespace NetFlux
 {
-    Socket::Socket ( ) : msocket ( INVALID )
-    {
-    }
 
     Socket::Socket ( int socket, const InetAddress & address )
-        : msocket ( socket ), maddress ( address )
-    {
-    }
+        : msocket ( socket ), maddress ( address ) { }
 
     Socket::~Socket ( )
     {
@@ -36,4 +31,6 @@ namespace NetFlux
 
         return true;
     }
+
+    Socket::Socket ( ) : msocket ( INVALID ) { }
 }
