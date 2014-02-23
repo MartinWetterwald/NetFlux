@@ -5,7 +5,7 @@
 
 namespace NetFlux
 {
-    class Socket
+    class Socket : public InetAddress
     {
     public:
         Socket ( int socket, const InetAddress & address );
@@ -16,15 +16,12 @@ namespace NetFlux
             return ( msocket != INVALID );
         }
 
-        bool getAddress ( std::string & str ) const;
         bool close ( );
 
 
     protected:
         Socket ( );
-
         int msocket;
-        InetAddress maddress;
 
         static const int INVALID = -1;
     };

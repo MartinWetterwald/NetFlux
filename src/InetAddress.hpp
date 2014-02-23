@@ -4,10 +4,11 @@
 #include "libs.hpp"
 
 #include <string>
+#include <cstring> // memcpy
 
 namespace NetFlux
 {
-    class InetAddress : public sockaddr
+    class InetAddress : protected sockaddr
     {
     public:
         InetAddress ( );
@@ -15,7 +16,16 @@ namespace NetFlux
         InetAddress ( const sockaddr_in & sin );
         InetAddress ( const sockaddr_in6 & sin6 );
 
-        bool ipToString ( std::string & str ) const;
+        std::string retrieveIp ( ) const;
+        uint16_t retrievePort ( ) const;
+
+
+    protected:
+        inline void fillAddress ( const sockaddr * saddr )
+        {
+            sa_family = saddr -> sa_family;
+            memcpy ( sa_data, saddr -> sa_data, sizeof ( saddr -> sa_data ) );
+        }
     };
 }
 

@@ -81,7 +81,7 @@ namespace Tcp
             }
 
             msocket = sockfd;
-            maddress = * current -> ai_addr;
+            fillAddress ( current -> ai_addr );
 
             freeaddrinfo ( config_list );
             return true;

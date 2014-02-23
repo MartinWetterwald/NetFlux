@@ -1,17 +1,13 @@
 #include "InetAddress.hpp"
 
-#include <cstring> // memcpy
-
 namespace NetFlux
 {
     InetAddress::InetAddress ( ) { }
 
     InetAddress::InetAddress ( const sockaddr & saddr )
     {
-        sa_family = saddr.sa_family;
-        memcpy ( sa_data, saddr.sa_data, sizeof ( saddr.sa_data ) );
+        fillAddress ( &saddr );
     }
-
 
     InetAddress::InetAddress ( const sockaddr_in & sin )
         : InetAddress ( reinterpret_cast <const sockaddr &> ( sin ) ) { }
@@ -21,7 +17,7 @@ namespace NetFlux
         : InetAddress ( reinterpret_cast <const sockaddr &> ( sin6 ) ) { }
 
 
-    bool InetAddress::ipToString ( std::string & str ) const
+    std::string InetAddress::retrieveIp ( ) const
     {
         char dest [ INET6_ADDRSTRLEN ];
         const char * ret;
@@ -43,15 +39,23 @@ namespace NetFlux
             break;
 
             default:
-                return false;
+                ret = 0;
         }
+        return std::string ( ret );
+    }
 
-        if ( ret == 0 )
+    uint16_t InetAddress::retrievePort ( ) const
+    {
+        switch ( sa_family )
         {
-            return false;
-        }
+            case AF_INET:
+                return ntohs ( reinterpret_cast <const sockaddr_in *> ( this ) -> sin_port );
 
-        str = ret;
-        return true;
+            case AF_INET6:
+                return ntohs ( reinterpret_cast <const sockaddr_in6 *> ( this ) -> sin6_port );
+
+            default:
+                return 0;
+        }
     }
 }

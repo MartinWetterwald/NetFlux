@@ -3,7 +3,7 @@
 namespace NetFlux
 {
     Socket::Socket ( int socket, const InetAddress & address )
-        : msocket ( socket ), maddress ( address ) { }
+        : InetAddress ( address ), msocket ( socket ) { }
 
     Socket::~Socket ( )
     {
@@ -11,11 +11,6 @@ namespace NetFlux
         {
             ::close ( msocket );
         }
-    }
-
-    bool Socket::getAddress ( std::string & str ) const
-    {
-        return maddress.ipToString ( str );
     }
 
     bool Socket::close ( )
