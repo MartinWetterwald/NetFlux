@@ -1,7 +1,7 @@
 #ifndef _SOCKET_IO_EVENT_EVENT_HPP_
 #define _SOCKET_IO_EVENT_EVENT_HPP_
 
-#include "../Socket.hpp"
+#include "../Net/Socket.hpp"
 
 namespace NetFlux
 {
@@ -10,8 +10,7 @@ namespace NetFlux
         class Event
         {
         public:
-            Event ( ) : read ( false ), write ( false ), except ( false );
-            virtual ~Event ( );
+            Event ( ) : read ( false ), write ( false ), except ( false ) { }
 
             inline void setRead ( )
             {
@@ -34,7 +33,7 @@ namespace NetFlux
             bool except;
 
             friend class Notifier;
-        }
+        };
     }
 }
 #endif
