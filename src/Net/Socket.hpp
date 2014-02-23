@@ -2,6 +2,7 @@
 #define _SOCKET_HPP_
 
 #include "InetAddress.hpp"
+#include "../SocketIOEvent/Subscriber.hpp"
 
 namespace NetFlux
 {
@@ -12,7 +13,7 @@ namespace NetFlux
 
     namespace Net
     {
-        class Socket : public InetAddress
+        class Socket : public InetAddress, public SocketIOEvent::Subscriber
         {
         public:
             Socket ( int socket, const InetAddress & address );
