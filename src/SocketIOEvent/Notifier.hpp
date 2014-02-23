@@ -13,8 +13,8 @@ namespace NetFlux
             Notifier ( );
             virtual ~Notifier ( );
 
-            void subscribe ( Net::Socket * sock );
-            void unsubscribe ( Net::Socket * sock );
+            bool subscribe ( Net::Socket * sock );
+            bool unsubscribe ( Net::Socket * sock );
 
             void startNotify ( );
 

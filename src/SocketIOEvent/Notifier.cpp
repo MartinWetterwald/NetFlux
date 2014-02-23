@@ -24,14 +24,83 @@ namespace SocketIOEvent
         }
     }
 
-    void Notifier::subscribe ( Net::Socket * sock )
+    bool Notifier::subscribe ( Net::Socket * sock )
     {
+        if ( sock -> msocket == Net::Socket::INVALID )
+        {
+            return false;
+        }
 
+        if ( sock -> notifier )
+        {
+            if ( sock -> notifier == this )
+            {
+                return true;
+            }
+            sock -> notifier -> unsubscribe ( sock );
+        }
+
+        if ( first == 0 )
+        {
+            first = new SocketList;
+            last = first;
+            first -> previous = 0;
+        }
+        else
+        {
+            last -> next = new SocketList;
+            last -> next -> previous = last;
+            last = last -> next;
+        }
+
+        last -> next = 0;
         sock -> notifier = this;
+
+        return true;
     }
 
-    void Notifier::unsubscribe ( Net::Socket * sock )
+    bool Notifier::unsubscribe ( Net::Socket * sock )
     {
-        sock -> notifier = 0;
+        if ( sock -> notifier != this )
+        {
+            return false;
+        }
+
+        SocketList * current = first;
+
+        while ( current )
+        {
+            if ( current -> socket != sock )
+            {
+                current = current -> next;
+                continue;
+            }
+
+            if ( current -> previous )
+            {
+                current -> previous -> next = current -> next;
+            }
+
+            if ( current -> next )
+            {
+                current -> next -> previous = current -> previous;
+            }
+
+            if ( current == first )
+            {
+                first = current -> next;
+            }
+
+            if ( current == last )
+            {
+                last = current -> previous;
+            }
+
+            delete current;
+
+            return true;
+        }
+
+        return false;
     }
 } }
