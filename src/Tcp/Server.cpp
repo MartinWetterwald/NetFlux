@@ -11,7 +11,7 @@
 namespace NetFlux {
 namespace Tcp
 {
-    Server * Server::Create ( uint16_t port )
+    bool Server::listen ( uint16_t port, int backlog )
     {
         // We convert the unsigned short port into C string.
         char port_str [ 6 ];
@@ -70,10 +70,21 @@ namespace Tcp
                 continue;
             }
 
-            // Everything is fine. We can allocate the Server.
-            Server * tcpServer = new Server ( sockfd, * current -> ai_addr );
+            ret = ::listen ( sockfd, backlog );
+            if ( ret == -1 )
+            {
+#ifdef DEBUG
+                perror ( "NetFlux::Tcp::Server::listen (listen)" );
+#endif
+                ::close ( sockfd );
+                return false;
+            }
+
+            msocket = sockfd;
+            maddress = * current -> ai_addr;
+
             freeaddrinfo ( config_list );
-            return tcpServer;
+            return true;
         }
 
         // We haven't found any suitable config.
@@ -81,32 +92,14 @@ namespace Tcp
         std::cout << "Netflux::Tcp::Server::listen (getaddrinfo): didn't return any config matching given hints." << std::endl;
 #endif
         freeaddrinfo ( config_list );
-        return 0;
+        return false;
     }
 
     Server::~Server ( )
     {
     }
 
-    bool Server::listen ( int backlog )
-    {
-        if ( ! * this )
-        {
-            return false;
-        }
-
-        int ret = ::listen ( msocket, backlog );
-        if ( ret == -1 )
-        {
-#ifdef DEBUG
-            perror ( "NetFlux::Tcp::Server::listen (listen)" );
-#endif
-            close ( );
-            return false;
-        }
-
-        return true;
-    }
+    Server::Server ( ) { }
 
     Server::Server ( int sock, const InetAddress & address )
         : Socket::Socket ( sock, address ) { }

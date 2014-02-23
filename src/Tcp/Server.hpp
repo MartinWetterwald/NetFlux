@@ -10,10 +10,9 @@ namespace NetFlux
         class Server : public Socket
         {
         public:
-            static Server * Create ( uint16_t port );
             virtual ~Server ( );
 
-            bool listen ( int backlog = 10 );
+            bool listen ( uint16_t port, int backlog = 10 );
 
             template <class SERVERSTREAM> SERVERSTREAM * accept ( )
             {
@@ -38,6 +37,7 @@ namespace NetFlux
             }
 
         protected:
+            Server ( );
             Server ( int sock, const InetAddress & address );
         };
     }
