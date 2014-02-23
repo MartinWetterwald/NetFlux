@@ -5,6 +5,11 @@
 
 namespace NetFlux
 {
+    namespace SocketIOEvent
+    {
+        class Notifier;
+    }
+
     namespace Net
     {
         class Socket : public InetAddress
@@ -25,7 +30,10 @@ namespace NetFlux
             Socket ( );
             int msocket;
 
+            SocketIOEvent::Notifier * notifier;
             static const int INVALID = -1;
+
+            friend class SocketIOEvent::Notifier;
         };
     }
 }
