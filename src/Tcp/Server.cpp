@@ -1,4 +1,4 @@
-#include "TcpServer.hpp"
+#include "Server.hpp"
 
 #ifdef DEBUG
 #include <iostream>
@@ -8,9 +8,10 @@
 #include <cstdlib> // atoi
 #include <cstdio> // snprintf
 
-namespace NetFlux
+namespace NetFlux {
+namespace Tcp
 {
-    TcpServer * TcpServer::Create ( uint16_t port )
+    Server * Server::Create ( uint16_t port )
     {
         // We convert the unsigned short port into C string.
         char port_str [ 6 ];
@@ -30,7 +31,7 @@ namespace NetFlux
         if ( ret != 0 )
         {
 #ifdef DEBUG
-            std::cout << "NetFlux::TcpServer::listen (getaddrinfo): "
+            std::cout << "NetFlux::Tcp::Server::listen (getaddrinfo): "
                 << gai_strerror ( ret ) << std::endl;
 #endif
             return 0;
@@ -45,7 +46,7 @@ namespace NetFlux
             if ( sockfd == INVALID )
             {
 #ifdef DEBUG
-                perror ( "NetFlux::TcpServer::listen (socket)" );
+                perror ( "NetFlux::Tcp::Server::listen (socket)" );
 #endif
                 continue;
             }
@@ -54,31 +55,31 @@ namespace NetFlux
             if ( ret == -1 )
             {
 #ifdef DEBUG
-                perror ( "NetFlux::TcpServer::listen (bind)" );
+                perror ( "NetFlux::Tcp::Server::listen (bind)" );
 #endif
                 ::close ( sockfd );
                 continue;
             }
 
-            // Everything is fine. We can allocate the TcpServer.
-            TcpServer * tcpServer = new TcpServer ( sockfd, * current -> ai_addr );
+            // Everything is fine. We can allocate the Server.
+            Server * tcpServer = new Server ( sockfd, * current -> ai_addr );
             freeaddrinfo ( config_list );
             return tcpServer;
         }
 
         // We haven't found any suitable config.
 #ifdef DEBUG
-        std::cout << "Netflux::TcpServer::listen (getaddrinfo): didn't return any config matching given hints." << std::endl;
+        std::cout << "Netflux::Tcp::Server::listen (getaddrinfo): didn't return any config matching given hints." << std::endl;
 #endif
         freeaddrinfo ( config_list );
         return 0;
     }
 
-    TcpServer::~TcpServer ( )
+    Server::~Server ( )
     {
     }
 
-    bool TcpServer::listen ( int backlog )
+    bool Server::listen ( int backlog )
     {
         if ( ! * this )
         {
@@ -89,7 +90,7 @@ namespace NetFlux
         if ( ret == -1 )
         {
 #ifdef DEBUG
-            perror ( "NetFlux::TcpServer::listen (listen)" );
+            perror ( "NetFlux::Tcp::Server::listen (listen)" );
 #endif
             close ( );
             return false;
@@ -98,6 +99,6 @@ namespace NetFlux
         return true;
     }
 
-    TcpServer::TcpServer ( int sock, const InetAddress & address )
+    Server::Server ( int sock, const InetAddress & address )
         : Socket::Socket ( sock, address ) { }
-}
+} }
