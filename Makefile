@@ -25,6 +25,7 @@ OBJ = $(addprefix $(OBJDIR), $(notdir $(SRC:%.cpp=%.o)))
 DEP = $(wildcard $(DEPDIR)*.d)
 
 .PHONY: clean mrproper all
+.SECONDEXPANSION:
 
 ifneq ($(words $(OBJ)),0)
 $(LIB): $(OBJ)
@@ -38,7 +39,7 @@ $(LIB):
 endif
 
 
-$(OBJDIR)%.o: $(SRCDIR)%.cpp $(THIS)
+$(OBJDIR)%.o: $$(shell find $(SRCDIR) -name '%.cpp') $(THIS)
 	@mkdir -p $(DEPDIR)
 	@mkdir -p $(OBJDIR)
 	@printf "%-13s <$<>...\n" "Compiling"
