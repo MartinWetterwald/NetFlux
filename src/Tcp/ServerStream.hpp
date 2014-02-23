@@ -12,8 +12,22 @@ namespace NetFlux
         public:
             virtual ~ServerStream ( );
 
+            inline ssize_t send ( const void * buf, size_t len )
+            {
+                return ::send ( msocket, buf, len, 0 );
+            }
+
+            inline ssize_t recv ( void * buf, size_t len )
+            {
+                return ::recv ( msocket, buf, len, 0 );
+            }
+
         protected:
             ServerStream ( int sock, const InetAddress & address );
+
+
+        private:
+            ServerStream ( ) = delete;
         };
     }
 }
