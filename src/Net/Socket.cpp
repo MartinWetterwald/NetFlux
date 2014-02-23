@@ -1,6 +1,7 @@
 #include "Socket.hpp"
 
-namespace NetFlux
+namespace NetFlux {
+namespace Net
 {
     Socket::Socket ( int socket, const InetAddress & address )
         : InetAddress ( address ), msocket ( socket ) { }
@@ -27,4 +28,4 @@ namespace NetFlux
     }
 
     Socket::Socket ( ) : msocket ( INVALID ) { }
-}
+} }

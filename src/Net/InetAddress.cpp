@@ -1,6 +1,7 @@
 #include "InetAddress.hpp"
 
-namespace NetFlux
+namespace NetFlux {
+namespace Net
 {
     InetAddress::InetAddress ( ) { }
 
@@ -58,4 +59,4 @@ namespace NetFlux
                 return 0;
         }
     }
-}
+} }

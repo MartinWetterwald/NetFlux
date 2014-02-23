@@ -1,13 +1,13 @@
 #ifndef _TCP_SERVER_STREAM_HPP_
 #define _TCP_SERVER_STREAM_HPP_
 
-#include "../Socket.hpp"
+#include "../Net/Socket.hpp"
 
 namespace NetFlux
 {
     namespace Tcp
     {
-        class ServerStream : public Socket
+        class ServerStream : public Net::Socket
         {
         public:
             virtual ~ServerStream ( );
