@@ -51,21 +51,21 @@ namespace Tcp
                 continue;
             }
 
+            const int yes = 1;
+            ret = setsockopt ( sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof ( int ) );
+            if ( ret == -1 )
+            {
+                perror ( "NetFlux::Tcp::Server::listen (setsockopt)" );
+                ::close ( sockfd );
+                continue;
+            }
+
             ret = bind ( sockfd, current -> ai_addr, sizeof ( sockaddr ) );
             if ( ret == -1 )
             {
 #ifdef DEBUG
                 perror ( "NetFlux::Tcp::Server::listen (bind)" );
 #endif
-                ::close ( sockfd );
-                continue;
-            }
-
-            const int yes = 1;
-            ret = setsockopt ( sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof ( int ) );
-            if ( ret == -1 )
-            {
-                perror ( "NetFlux::Tcp::Server::listen (setsockopt)" );
                 ::close ( sockfd );
                 continue;
             }
