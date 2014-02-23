@@ -61,6 +61,15 @@ namespace Tcp
                 continue;
             }
 
+            const int yes = 1;
+            ret = setsockopt ( sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof ( int ) );
+            if ( ret == -1 )
+            {
+                perror ( "NetFlux::Tcp::Server::listen (setsockopt)" );
+                ::close ( sockfd );
+                continue;
+            }
+
             // Everything is fine. We can allocate the Server.
             Server * tcpServer = new Server ( sockfd, * current -> ai_addr );
             freeaddrinfo ( config_list );
