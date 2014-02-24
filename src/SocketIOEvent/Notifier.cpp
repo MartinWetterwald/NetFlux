@@ -1,17 +1,23 @@
 #include "Notifier.hpp"
+#include "Event.hpp"
+
+#include <sys/select.h>
 
 namespace NetFlux {
 namespace SocketIOEvent
 {
-    Notifier::Notifier ( ) : first ( 0 ), last ( 0 ), running ( false ) { }
+    Notifier::Notifier ( ) : mpfirst ( 0 ), mplast ( 0 ), running ( false )
+    {
+    }
 
     Notifier::~Notifier ( )
     {
-        while ( first )
+        while ( mpfirst )
         {
-            SocketList * old = first;
-            first = first -> next;
-            delete old;
+            mplast = mpfirst;
+            mpfirst = mpfirst -> next;
+            delete mplast -> socket;
+            delete mplast;
         }
     }
 
@@ -21,6 +27,94 @@ namespace SocketIOEvent
 
         while ( running )
         {
+            timeval t;
+            t.tv_sec = 1;
+            t.tv_usec = 0;
+            int maxfs = 0;
+            fd_set readfds, writefds, exceptfds;
+            FD_ZERO ( &readfds );
+            FD_ZERO ( &writefds );
+            FD_ZERO ( &exceptfds );
+
+            for ( SocketList * current = mpfirst ; current != 0 ; current = current -> next )
+            {
+                if ( current -> socket -> msocket > maxfs )
+                {
+                    maxfs = current -> socket -> msocket;
+                }
+
+                Event event;
+                current -> socket -> chooseSubscription ( event );
+
+                if ( event.read )
+                {
+                    FD_SET ( current -> socket -> msocket, &readfds );
+                }
+
+                if ( event.write )
+                {
+                    FD_SET ( current -> socket -> msocket, &writefds );
+                }
+
+                if ( event.except )
+                {
+                    FD_SET ( current -> socket -> msocket, &exceptfds );
+                }
+            }
+
+            int ret = select ( maxfs + 1, &readfds, &writefds, &exceptfds, &t );
+            if ( ret == -1 )
+            {
+#ifdef DEBUG
+                perror ( "NetFlux::SocketIOEvent::Notifier::startNotify (select)" );
+#endif
+                running = false;
+            }
+            else if ( ret == 0 )
+            {
+                continue;
+            }
+
+            if ( ! running )
+            {
+                break;
+            }
+
+            SocketList * current = mpcurrent = mpfirst;
+            while ( current )
+            {
+                if ( FD_ISSET ( current -> socket -> msocket, &readfds ) )
+                {
+                    current -> socket -> readEventAction ( );
+                    if ( current != mpcurrent )
+                    {
+                        current = mpcurrent;
+                        continue;
+                    }
+                }
+
+                if ( FD_ISSET ( current -> socket -> msocket, &writefds ) )
+                {
+                    current -> socket -> writeEventAction ( );
+                    if ( current != mpcurrent )
+                    {
+                        current = mpcurrent;
+                        continue;
+                    }
+                }
+
+                if ( FD_ISSET ( current -> socket -> msocket, &exceptfds ) )
+                {
+                    current -> socket -> exceptEventAction ( );
+                    if ( current != mpcurrent )
+                    {
+                        current = mpcurrent;
+                        continue;
+                    }
+                }
+
+                current = mpcurrent = current -> next;
+            }
         }
     }
 
@@ -40,21 +134,23 @@ namespace SocketIOEvent
             sock -> notifier -> unsubscribe ( sock );
         }
 
-        if ( first == 0 )
+        SocketList * created = new SocketList;
+        if ( mpfirst == 0 )
         {
-            first = new SocketList;
-            last = first;
-            first -> previous = 0;
+            mpfirst = created;
+            mplast = mpfirst;
+            mpfirst -> previous = 0;
         }
         else
         {
-            last -> next = new SocketList;
-            last -> next -> previous = last;
-            last = last -> next;
+            mplast -> next = created;
+            mplast -> next -> previous = mplast;
+            mplast = mplast -> next;
         }
 
-        last -> next = 0;
+        mplast -> next = 0;
         sock -> notifier = this;
+        created -> socket = sock;
 
         return true;
     }
@@ -66,7 +162,7 @@ namespace SocketIOEvent
             return false;
         }
 
-        SocketList * current = first;
+        SocketList * current = mpfirst;
 
         while ( current )
         {
@@ -86,16 +182,22 @@ namespace SocketIOEvent
                 current -> next -> previous = current -> previous;
             }
 
-            if ( current == first )
+            if ( current == mpfirst )
             {
-                first = current -> next;
+                mpfirst = current -> next;
             }
 
-            if ( current == last )
+            if ( current == mplast )
             {
-                last = current -> previous;
+                mplast = current -> previous;
             }
 
+            if ( current == mpcurrent )
+            {
+                mpcurrent = mpcurrent -> next;
+            }
+
+            sock -> notifier = 0;
             delete current;
 
             return true;

@@ -1,8 +1,6 @@
 #ifndef _SOCKET_IO_EVENT_EVENT_HPP_
 #define _SOCKET_IO_EVENT_EVENT_HPP_
 
-#include "../Net/Socket.hpp"
-
 namespace NetFlux
 {
     namespace SocketIOEvent

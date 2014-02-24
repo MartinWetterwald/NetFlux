@@ -31,8 +31,10 @@ namespace NetFlux
                 SocketList * next;
             };
 
-            SocketList * first;
-            SocketList * last;
+            SocketList * mpfirst;
+            SocketList * mplast;
+
+            SocketList * mpcurrent;
 
             bool running;
         };

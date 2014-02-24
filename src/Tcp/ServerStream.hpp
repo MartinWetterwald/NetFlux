@@ -25,7 +25,6 @@ namespace NetFlux
         protected:
             ServerStream ( int sock, const InetAddress & address );
 
-
         private:
             ServerStream ( ) = delete;
         };
