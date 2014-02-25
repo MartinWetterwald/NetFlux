@@ -18,7 +18,7 @@ namespace NetFlux
             {
                 if ( ! * this )
                 {
-                    return 0;
+                    return nullptr;
                 }
 
                 sockaddr address;
@@ -30,14 +30,14 @@ namespace NetFlux
 #ifdef DEBUG
                     perror ( "NetFlux::Tcp::Server::accept (accept)" );
 #endif
-                    return 0;
+                    return nullptr;
                 }
 
                 return new SERVERSTREAM ( sockfd, address );
             }
 
         protected:
-            Server ( );
+            Server ( ) = default;
             Server ( int sock, const InetAddress & address );
         };
     }

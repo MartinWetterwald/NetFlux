@@ -10,7 +10,7 @@ namespace NetFlux
         class Subscriber
         {
         public:
-            Subscriber ( );
+            Subscriber ( ) = default;
             virtual ~Subscriber ( );
 
         protected:

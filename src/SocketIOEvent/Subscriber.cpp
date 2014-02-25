@@ -3,7 +3,5 @@
 namespace NetFlux {
 namespace SocketIOEvent
 {
-    Subscriber::Subscriber ( ) { }
-
     Subscriber::~Subscriber ( ) { }
 } }

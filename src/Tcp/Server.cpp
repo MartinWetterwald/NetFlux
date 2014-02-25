@@ -5,7 +5,6 @@
 #endif
 
 #include <cstring> // memset
-#include <cstdlib> // atoi
 #include <cstdio> // snprintf
 
 namespace NetFlux {
@@ -34,7 +33,7 @@ namespace Tcp
             std::cout << "NetFlux::Tcp::Server::listen (getaddrinfo): "
                 << gai_strerror ( ret ) << std::endl;
 #endif
-            return 0;
+            return false;
         }
 
         int sockfd;
@@ -77,7 +76,7 @@ namespace Tcp
                 perror ( "NetFlux::Tcp::Server::listen (listen)" );
 #endif
                 ::close ( sockfd );
-                return false;
+                break;
             }
 
             msocket = sockfd;
@@ -92,14 +91,11 @@ namespace Tcp
         std::cout << "Netflux::Tcp::Server::listen (getaddrinfo): didn't return any config matching given hints." << std::endl;
 #endif
         freeaddrinfo ( config_list );
+        msocket = INVALID;
         return false;
     }
 
-    Server::~Server ( )
-    {
-    }
-
-    Server::Server ( ) { }
+    Server::~Server ( ) { }
 
     Server::Server ( int sock, const InetAddress & address )
         : Socket::Socket ( sock, address ) { }

@@ -13,7 +13,7 @@ namespace NetFlux
         class InetAddress : protected sockaddr
         {
         public:
-            InetAddress ( );
+            InetAddress ( ) = default;
             InetAddress ( const sockaddr & saddr );
             InetAddress ( const sockaddr_in & sin );
             InetAddress ( const sockaddr_in6 & sin6 );

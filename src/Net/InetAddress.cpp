@@ -3,8 +3,6 @@
 namespace NetFlux {
 namespace Net
 {
-    InetAddress::InetAddress ( ) { }
-
     InetAddress::InetAddress ( const sockaddr & saddr )
     {
         fillAddress ( &saddr );
