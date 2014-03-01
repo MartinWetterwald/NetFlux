@@ -11,14 +11,18 @@ OBJDIR = $(BUILDDIR)obj/
 DEPDIR = $(BUILDDIR)dep/
 LIB = $(BINDIR)$(LIBNAME)
 
-CC = @clang++
+CLANG = @clang++
+GPP = @g++
 
-CFLAGS = -std=c++11 -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-c++98-compat
+COMMONFLAGS = -std=c++11
 ifneq ($(MODE),release)
-CFLAGS += -DDEBUG -g -O0
+COMMONFLAGS += -DDEBUG -g -O0
 else
-CFLAGS += -Werror -g0 -O3
+COMMONFLAGS += -Werror -g0 -O3
 endif
+CLANGFLAGS = $(COMMONFLAGS) -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-c++98-compat
+GPPFLAGS = $(COMMONFLAGS) -Wall -Wextra -Weffc++ -Wno-error=effc++
+
 
 AR = @ar rs
 
@@ -51,8 +55,13 @@ endif
 $(OBJDIR)%.o: $$(call rwildcard,$(SRCDIR),%.cpp) $(THIS)
 	@mkdir -p $(DEPDIR)
 	@mkdir -p $(OBJDIR)
-	@printf "%-13s <$<>...\n" "Compiling"
-	$(CC) $(CFLAGS) -o $@ -c -MMD -MF $(addprefix $(DEPDIR), $(notdir $(<:.cpp=.d))) $<
+ifeq ($(CC),g++)
+	@printf "%-13s <$<>...\n" "Gplusplusing"
+	$(GPP) $(GPPFLAGS) -o $@ -c -MMD -MF $(addprefix $(DEPDIR), $(notdir $(<:.cpp=.d))) $<
+else
+	@printf "%-13s <$<>...\n" "Clanging"
+	$(CLANG) $(CLANGFLAGS) -o $@ -c -MMD -MF $(addprefix $(DEPDIR), $(notdir $(<:.cpp=.d))) $<
+endif
 
 -include $(DEP)
 
