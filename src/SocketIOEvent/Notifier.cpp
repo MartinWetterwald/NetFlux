@@ -6,7 +6,8 @@
 namespace NetFlux {
 namespace SocketIOEvent
 {
-    Notifier::Notifier ( ) : mpfirst ( 0 ), mplast ( 0 ), running ( false )
+    Notifier::Notifier ( ) :
+        mpfirst ( nullptr ), mplast ( nullptr ), mpcurrent ( nullptr ), running ( false )
     {
     }
 
@@ -16,6 +17,7 @@ namespace SocketIOEvent
         {
             mplast = mpfirst;
             mpfirst = mpfirst -> next;
+            mplast -> socket -> notifier = nullptr;
             delete mplast;
         }
     }

@@ -17,6 +17,7 @@ namespace NetFlux
             InetAddress ( const sockaddr & saddr );
             InetAddress ( const sockaddr_in & sin );
             InetAddress ( const sockaddr_in6 & sin6 );
+            virtual ~InetAddress ( );
 
             std::string retrieveIp ( ) const;
             uint16_t retrievePort ( ) const;

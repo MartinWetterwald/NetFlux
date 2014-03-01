@@ -15,6 +15,8 @@ namespace Net
     InetAddress::InetAddress ( const sockaddr_in6 & sin6 )
         : InetAddress ( reinterpret_cast <const sockaddr &> ( sin6 ) ) { }
 
+    InetAddress::~InetAddress ( ) { }
+
 
     std::string InetAddress::retrieveIp ( ) const
     {
