@@ -68,7 +68,6 @@ namespace SocketIOEvent
 #ifdef DEBUG
                 perror ( "NetFlux::SocketIOEvent::Notifier::startNotify (select)" );
 #endif
-                running = false;
             }
             else if ( ret == 0 )
             {
