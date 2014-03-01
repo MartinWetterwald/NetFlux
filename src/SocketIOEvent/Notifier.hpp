@@ -37,6 +37,10 @@ namespace NetFlux
             SocketList * mpcurrent;
 
             bool running;
+
+        private:
+            Notifier ( const Notifier & ) = delete;
+            Notifier & operator= ( const Notifier & ) = delete;
         };
     }
 }

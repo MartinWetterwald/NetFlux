@@ -35,6 +35,11 @@ namespace NetFlux
             static const int INVALID = -1;
 
             friend class SocketIOEvent::Notifier;
+
+
+        private:
+            Socket ( const Socket & ) = delete;
+            Socket & operator= ( const Socket & ) = delete;
         };
     }
 }

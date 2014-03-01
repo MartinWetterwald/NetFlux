@@ -5,7 +5,7 @@ namespace NetFlux {
 namespace Net
 {
     Socket::Socket ( int socket, const InetAddress & address )
-        : InetAddress ( address ), msocket ( socket ), notifier ( 0 ) { }
+        : InetAddress ( address ), msocket ( socket ), notifier ( nullptr ) { }
 
     Socket::~Socket ( )
     {
@@ -38,5 +38,5 @@ namespace Net
         return true;
     }
 
-    Socket::Socket ( ) : msocket ( INVALID ), notifier ( 0 ) { }
+    Socket::Socket ( ) : msocket ( INVALID ), notifier ( nullptr ) { }
 } }
