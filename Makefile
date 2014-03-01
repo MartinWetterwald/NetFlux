@@ -10,9 +10,9 @@ OBJDIR = $(BUILDDIR)obj/
 DEPDIR = $(BUILDDIR)dep/
 LIB = $(BINDIR)$(LIBNAME)
 
-CC = @clang++
-
-CFLAGS = -std=c++11 -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-c++98-compat
+CC = @g++
+#-Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-c++98-compat
+CFLAGS = -std=c++11 -Wall -Wextra
 ifneq ($(MODE),release)
 CFLAGS += -DDEBUG -g -O0
 else
