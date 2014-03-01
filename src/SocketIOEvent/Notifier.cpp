@@ -16,7 +16,6 @@ namespace SocketIOEvent
         {
             mplast = mpfirst;
             mpfirst = mpfirst -> next;
-            delete mplast -> socket;
             delete mplast;
         }
     }
@@ -134,11 +133,11 @@ namespace SocketIOEvent
         }
 
         SocketList * created = new SocketList;
-        if ( mpfirst == 0 )
+        if ( mpfirst == nullptr )
         {
             mpfirst = created;
             mplast = mpfirst;
-            mpfirst -> previous = 0;
+            mpfirst -> previous = nullptr;
         }
         else
         {
@@ -147,7 +146,7 @@ namespace SocketIOEvent
             mplast = mplast -> next;
         }
 
-        mplast -> next = 0;
+        mplast -> next = nullptr;
         sock -> notifier = this;
         created -> socket = sock;
 
@@ -196,7 +195,7 @@ namespace SocketIOEvent
                 mpcurrent = mpcurrent -> next;
             }
 
-            sock -> notifier = 0;
+            sock -> notifier = nullptr;
             delete current;
 
             return true;
