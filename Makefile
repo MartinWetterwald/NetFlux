@@ -1,5 +1,7 @@
 THIS := $(lastword $(MAKEFILE_LIST))
 
+rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
+
 LIBNAME = libnetflux.a
 SRCDIR = src/
 BUILDDIR = build/
@@ -19,7 +21,7 @@ endif
 
 AR = @ar rs
 
-SRC = $(shell find $(SRCDIR) -iname "*.cpp")
+SRC =  $(call rwildcard,$(SRCDIR),*.cpp)
 OBJ = $(addprefix $(OBJDIR), $(notdir $(SRC:%.cpp=%.o)))
 
 DEP = $(wildcard $(DEPDIR)*.d)
@@ -39,7 +41,7 @@ $(LIB):
 endif
 
 
-$(OBJDIR)%.o: $$(shell find $(SRCDIR) -name '%.cpp') $(THIS)
+$(OBJDIR)%.o: $$(call rwildcard,$(SRCDIR),%.cpp) $(THIS)
 	@mkdir -p $(DEPDIR)
 	@mkdir -p $(OBJDIR)
 	@printf "%-13s <$<>...\n" "Compiling"
