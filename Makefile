@@ -6,6 +6,7 @@ LIBNAME = libnetflux.a
 SRCDIR = src/
 BUILDDIR = build/
 BINDIR = $(BUILDDIR)bin/
+INCDIR = $(BUILDDIR)include/
 OBJDIR = $(BUILDDIR)obj/
 DEPDIR = $(BUILDDIR)dep/
 LIB = $(BINDIR)$(LIBNAME)
@@ -22,12 +23,18 @@ endif
 AR = @ar rs
 
 SRC =  $(call rwildcard,$(SRCDIR),*.cpp)
+HPP =  $(call rwildcard,$(SRCDIR),*.hpp)
 OBJ = $(addprefix $(OBJDIR), $(notdir $(SRC:%.cpp=%.o)))
 
 DEP = $(wildcard $(DEPDIR)*.d)
 
-.PHONY: clean mrproper all
+.PHONY: clean mrproper all default
 .SECONDEXPANSION:
+
+default: $(LIB)
+	@printf "%-13s <$(INCDIR)>...\n" "Generating"
+	@mkdir -p $(INCDIR)
+	@cd $(SRCDIR) && cp -u --parents -t ../$(INCDIR) $(HPP:$(SRCDIR)%=%)
 
 ifneq ($(words $(OBJ)),0)
 $(LIB): $(OBJ)
