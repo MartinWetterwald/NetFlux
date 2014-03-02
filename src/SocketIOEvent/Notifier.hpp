@@ -1,10 +1,13 @@
 #ifndef _SOCKET_IO_EVENT_NOTIFIER_HPP_
 #define _SOCKET_IO_EVENT_NOTIFIER_HPP_
 
-#include "../Net/Socket.hpp"
-
 namespace NetFlux
 {
+    namespace Net
+    {
+        class Socket;
+    }
+
     namespace SocketIOEvent
     {
         class Notifier

@@ -1,5 +1,4 @@
 #include "Socket.hpp"
-#include "../SocketIOEvent/Notifier.hpp"
 
 namespace NetFlux {
 namespace Net

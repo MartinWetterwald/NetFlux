@@ -1,5 +1,6 @@
 #include "Notifier.hpp"
 #include "Event.hpp"
+#include "../Net/Socket.hpp"
 
 #include <sys/select.h>
 

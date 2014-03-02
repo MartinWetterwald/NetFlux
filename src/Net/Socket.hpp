@@ -3,14 +3,10 @@
 
 #include "InetAddress.hpp"
 #include "../SocketIOEvent/Subscriber.hpp"
+#include "../SocketIOEvent/Notifier.hpp"
 
 namespace NetFlux
 {
-    namespace SocketIOEvent
-    {
-        class Notifier;
-    }
-
     namespace Net
     {
         class Socket : public InetAddress, public SocketIOEvent::Subscriber
