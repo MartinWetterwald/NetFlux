@@ -1,7 +1,9 @@
 #include "Notifier.hpp"
 #include "Event.hpp"
 
+#ifndef _WIN32
 #include <sys/select.h>
+#endif
 
 namespace NetFlux {
 namespace SocketIOEvent
