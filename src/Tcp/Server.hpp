@@ -23,7 +23,7 @@ namespace NetFlux
 
                 sockaddr address;
                 socklen_t address_length = sizeof ( sockaddr );
-                int sockfd = ::accept ( msocket, &address, &address_length );
+                SOCKET sockfd = ::accept ( msocket, &address, &address_length );
 
                 if ( sockfd == -1 )
                 {
@@ -38,7 +38,7 @@ namespace NetFlux
 
         protected:
             Server ( ) = default;
-            Server ( int sock, const InetAddress & address );
+            Server ( SOCKET sock, const InetAddress & address );
         };
     }
 }

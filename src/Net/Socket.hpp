@@ -12,7 +12,7 @@ namespace NetFlux
         class Socket : public InetAddress, public SocketIOEvent::Subscriber
         {
         public:
-            Socket ( int socket, const InetAddress & address );
+            Socket ( SOCKET socket, const InetAddress & address );
             virtual ~Socket ( );
 
             inline operator bool ( ) const
@@ -28,7 +28,7 @@ namespace NetFlux
             int msocket;
 
             SocketIOEvent::Notifier * notifier;
-            static const int INVALID = -1;
+            static const SOCKET INVALID = ( SOCKET ) -1;
 
             friend class SocketIOEvent::Notifier;
 

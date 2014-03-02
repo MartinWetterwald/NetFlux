@@ -2,7 +2,9 @@
 #include "Event.hpp"
 #include "../Net/Socket.hpp"
 
+#ifndef _WIN32
 #include <sys/select.h>
+#endif
 
 namespace NetFlux {
 namespace SocketIOEvent

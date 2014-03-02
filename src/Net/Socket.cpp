@@ -3,7 +3,7 @@
 namespace NetFlux {
 namespace Net
 {
-    Socket::Socket ( int socket, const InetAddress & address )
+    Socket::Socket ( SOCKET socket, const InetAddress & address )
         : InetAddress ( address ), msocket ( socket ), notifier ( nullptr ) { }
 
     Socket::~Socket ( )
@@ -15,7 +15,7 @@ namespace Net
                 notifier -> unsubscribe ( this );
             }
 
-            ::close ( msocket );
+            closesocket ( msocket );
         }
     }
 
@@ -31,7 +31,7 @@ namespace Net
             notifier -> unsubscribe ( this );
         }
 
-        ::close ( msocket );
+        closesocket ( msocket );
         msocket = INVALID;
 
         return true;

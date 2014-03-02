@@ -36,7 +36,7 @@ namespace Tcp
             return false;
         }
 
-        int sockfd;
+        SOCKET sockfd;
 
         // We try each config
         for ( addrinfo * current = config_list ; current -> ai_next != 0 ; ++current )
@@ -51,11 +51,11 @@ namespace Tcp
             }
 
             const int yes = 1;
-            ret = setsockopt ( sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof ( int ) );
+            ret = setsockopt ( sockfd, SOL_SOCKET, SO_REUSEADDR, ( const char * ) &yes, sizeof ( int ) );
             if ( ret == -1 )
             {
                 perror ( "NetFlux::Tcp::Server::listen (setsockopt)" );
-                ::close ( sockfd );
+                closesocket ( sockfd );
                 continue;
             }
 
@@ -65,7 +65,7 @@ namespace Tcp
 #ifdef DEBUG
                 perror ( "NetFlux::Tcp::Server::listen (bind)" );
 #endif
-                ::close ( sockfd );
+                closesocket ( sockfd );
                 continue;
             }
 
@@ -75,7 +75,7 @@ namespace Tcp
 #ifdef DEBUG
                 perror ( "NetFlux::Tcp::Server::listen (listen)" );
 #endif
-                ::close ( sockfd );
+                closesocket ( sockfd );
                 break;
             }
 
@@ -97,6 +97,5 @@ namespace Tcp
 
     Server::~Server ( ) { }
 
-    Server::Server ( int sock, const InetAddress & address )
-        : Socket::Socket ( sock, address ) { }
+    Server::Server ( SOCKET sock, const InetAddress & address ) : Socket ( sock, address ) { }
 } }
