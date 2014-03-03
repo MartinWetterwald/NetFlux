@@ -19,51 +19,37 @@ namespace Net
     InetAddress::~InetAddress ( ) { }
 
 
-    std::string InetAddress::retrieveIp ( ) const
+    void InetAddress::fillAddress ( const sockaddr * psaddr )
     {
+        memset ( &msaddr, '0', sizeof ( sockaddr ) );
+        msaddr.sa_family = psaddr -> sa_family;
+        memcpy ( msaddr.sa_data, psaddr -> sa_data, sizeof ( psaddr -> sa_data ) );
+
         char dest [ INET6_ADDRSTRLEN ];
-        const char * ret;
 
-        switch ( sa_family )
+        switch ( msaddr.sa_family )
         {
             case AF_INET:
             {
-                const sockaddr_in * sin = reinterpret_cast <const sockaddr_in *> ( this );
-                ret = inet_ntop ( sa_family, &sin -> sin_addr, dest, INET6_ADDRSTRLEN );
+                const sockaddr_in * sin = reinterpret_cast <const sockaddr_in *> ( &msaddr );
+                mip = inet_ntop ( msaddr.sa_family, &sin -> sin_addr, dest, INET6_ADDRSTRLEN );
+                mport = ntohs ( reinterpret_cast <const sockaddr_in *> ( &msaddr ) -> sin_port );
             }
             break;
 
             case AF_INET6:
             {
-                const sockaddr_in6 * sin6 = reinterpret_cast <const sockaddr_in6 *> ( this );
-                ret = inet_ntop ( sa_family, &sin6 -> sin6_addr, dest, INET6_ADDRSTRLEN );
+                const sockaddr_in6 * sin6 = reinterpret_cast <const sockaddr_in6 *> ( &msaddr );
+                mip = inet_ntop ( msaddr.sa_family, &sin6 -> sin6_addr, dest, INET6_ADDRSTRLEN );
+                mport = ntohs ( reinterpret_cast <const sockaddr_in6 *> ( &msaddr ) -> sin6_port );
             }
             break;
-
-            default:
-                ret = 0;
-        }
-        return std::string ( ret );
-    }
-
-    uint16_t InetAddress::retrievePort ( ) const
-    {
-        switch ( sa_family )
-        {
-            case AF_INET:
-                return ntohs ( reinterpret_cast <const sockaddr_in *> ( this ) -> sin_port );
-
-            case AF_INET6:
-                return ntohs ( reinterpret_cast <const sockaddr_in6 *> ( this ) -> sin6_port );
-
-            default:
-                return 0;
         }
     }
 
     void InetAddress::toString ( std::ostream & os ) const
     {
-        os << retrieveIp ( ) << ":" << retrievePort ( );
+        os << mip << ":" << mport;
     }
 } }
 

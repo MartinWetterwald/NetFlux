@@ -10,7 +10,7 @@ namespace NetFlux
 {
     namespace Net
     {
-        class InetAddress : protected sockaddr
+        class InetAddress
         {
         public:
             InetAddress ( ) = default;
@@ -19,17 +19,18 @@ namespace NetFlux
             InetAddress ( const sockaddr_in6 & sin6 );
             virtual ~InetAddress ( );
 
-            std::string retrieveIp ( ) const;
-            uint16_t retrievePort ( ) const;
             virtual void toString ( std::ostream & os ) const;
 
 
         protected:
-            inline void fillAddress ( const sockaddr * saddr )
-            {
-                sa_family = saddr -> sa_family;
-                memcpy ( sa_data, saddr -> sa_data, sizeof ( saddr -> sa_data ) );
-            }
+            void fillAddress ( const sockaddr * psaddr );
+
+            std::string mip;
+            uint16_t mport;
+
+
+        private:
+            sockaddr msaddr;
         };
     }
 }
