@@ -20,7 +20,7 @@ COMMONFLAGS += -DDEBUG -g -O0
 else
 COMMONFLAGS += -Werror -g0 -O3
 endif
-CLANGFLAGS = $(COMMONFLAGS) -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-c++98-compat
+CLANGFLAGS = $(COMMONFLAGS) -Weverything -Wno-padded -Wno-disabled-macro-expansion -Wno-c++98-compat -Wno-missing-prototypes
 GPPFLAGS = $(COMMONFLAGS) -Wall -Wextra -Weffc++ -Wno-error=effc++
 
 

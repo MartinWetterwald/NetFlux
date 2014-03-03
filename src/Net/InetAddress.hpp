@@ -21,6 +21,7 @@ namespace NetFlux
 
             std::string retrieveIp ( ) const;
             uint16_t retrievePort ( ) const;
+            virtual void toString ( std::ostream & os ) const;
 
 
         protected:
@@ -32,5 +33,7 @@ namespace NetFlux
         };
     }
 }
+
+std::ostream & operator<< ( std::ostream & os, const NetFlux::Net::InetAddress & addr );
 
 #endif

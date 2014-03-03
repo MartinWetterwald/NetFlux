@@ -1,4 +1,5 @@
 #include "InetAddress.hpp"
+#include <sstream>
 
 namespace NetFlux {
 namespace Net
@@ -59,4 +60,16 @@ namespace Net
                 return 0;
         }
     }
+
+    void InetAddress::toString ( std::ostream & os ) const
+    {
+        os << retrieveIp ( ) << ":" << retrievePort ( );
+    }
 } }
+
+
+std::ostream & operator<< ( std::ostream & os, const NetFlux::Net::InetAddress & addr )
+{
+    addr.toString ( os );
+    return os;
+}
