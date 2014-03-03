@@ -2,7 +2,7 @@
 #include "Event.hpp"
 #include "../Net/Socket.hpp"
 
-#ifndef _WIN32
+#if __unix__ || __posix__ || __linux__ || __APPLE__
 #include <sys/select.h>
 #endif
 

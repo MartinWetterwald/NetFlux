@@ -12,14 +12,14 @@ namespace NetFlux
         public:
             virtual ~ServerStream ( );
 
-            inline size_t send ( const void * buf, size_t len )
+            inline ssize_t send ( const void * buf, size_t len )
             {
-                return ( size_t ) ::send ( msocket, ( char * ) buf, len, 0 );
+                return ::send ( msocket, ( char * ) buf, len, 0 );
             }
 
-            inline size_t recv ( void * buf, size_t len )
+            inline ssize_t recv ( void * buf, size_t len )
             {
-                return ( size_t ) ::recv ( msocket, ( char * ) buf, len, 0 );
+                return ::recv ( msocket, ( char * ) buf, len, 0 );
             }
 
         protected:
