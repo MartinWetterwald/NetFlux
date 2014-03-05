@@ -1,16 +1,15 @@
-#include "Server.hpp"
+#include "Tcp_Client.hpp"
 
 #ifdef DEBUG
 #include <iostream>
 #endif
 
-#include <cstring> // memset
-#include <cstdio> // snprintf
-
 namespace NetFlux {
 namespace Tcp
 {
-    bool Server::listen ( uint16_t port, int backlog )
+    Client::~Client ( ) { }
+
+    bool Client::connectTo ( const std::string & host, uint16_t port )
     {
         // We convert the unsigned short port into C string.
         char port_str [ PORT_LENGTH + 1 ];
@@ -18,7 +17,7 @@ namespace Tcp
         if ( ret < 0 || ret > PORT_LENGTH )
         {
 #ifdef DEBUG
-            std::cout << "NetFlux::Tcp::Server::listen (snprintf): invalid return value ("
+            std::cout << "NetFlux::Tcp::Client::connectTo (snprintf): invalid return value ("
                 << ret << ")";
 #endif
             return false;
@@ -30,15 +29,14 @@ namespace Tcp
         hints.ai_family = AF_UNSPEC;
         hints.ai_socktype = SOCK_STREAM;
         hints.ai_protocol = IPPROTO_TCP;
-        hints.ai_flags = ( AI_PASSIVE | AI_NUMERICSERV );
 
         // We get the socket configs list
         addrinfo * config_list;
-        ret = getaddrinfo ( 0, port_str, &hints, &config_list );
+        ret = getaddrinfo ( host.c_str ( ), port_str, &hints, &config_list );
         if ( ret != 0 )
         {
 #ifdef DEBUG
-            std::cout << "NetFlux::Tcp::Server::listen (getaddrinfo): "
+            std::cout << "NetFlux::Tcp::Client::connectTo (getaddrinfo): "
                 << gai_strerror ( ret ) << std::endl;
 #endif
             return false;
@@ -53,38 +51,19 @@ namespace Tcp
             if ( sockfd == INVALID )
             {
 #ifdef DEBUG
-                perror ( "NetFlux::Tcp::Server::listen (socket)" );
+                perror ( "NetFlux::Tcp::Client::connectTo (socket)" );
 #endif
                 continue;
             }
 
-            const int yes = 1;
-            ret = setsockopt ( sockfd, SOL_SOCKET, SO_REUSEADDR, ( const char * ) &yes, sizeof ( int ) );
-            if ( ret == -1 )
-            {
-                perror ( "NetFlux::Tcp::Server::listen (setsockopt)" );
-                closesocket ( sockfd );
-                continue;
-            }
-
-            ret = bind ( sockfd, current -> ai_addr, sizeof ( sockaddr ) );
+            ret = connect ( sockfd, current -> ai_addr, current -> ai_addrlen );
             if ( ret == -1 )
             {
 #ifdef DEBUG
-                perror ( "NetFlux::Tcp::Server::listen (bind)" );
+                perror ( "NetFlux::Tcp::Client::connectTo (connect)" );
 #endif
                 closesocket ( sockfd );
                 continue;
-            }
-
-            ret = ::listen ( sockfd, backlog );
-            if ( ret == -1 )
-            {
-#ifdef DEBUG
-                perror ( "NetFlux::Tcp::Server::listen (listen)" );
-#endif
-                closesocket ( sockfd );
-                break;
             }
 
             msocket = sockfd;
@@ -96,14 +75,13 @@ namespace Tcp
 
         // We haven't found any suitable config.
 #ifdef DEBUG
-        std::cout << "Netflux::Tcp::Server::listen (getaddrinfo): didn't return any config matching given hints." << std::endl;
+        std::cout << "Netflux::Tcp::Client::connectTo (getaddrinfo): didn't return any config matching given hints." << std::endl;
 #endif
         freeaddrinfo ( config_list );
         msocket = INVALID;
         return false;
     }
 
-    Server::~Server ( ) { }
-
-    Server::Server ( SOCKET sock, const InetAddress & address ) : Socket ( sock, address ) { }
+    Client::Client ( SOCKET sock, const InetAddress & address )
+        : Net::Socket ( sock, address ) { }
 } }
