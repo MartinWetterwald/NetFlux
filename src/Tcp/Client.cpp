@@ -1,5 +1,8 @@
 #include "Client.hpp"
+
+#ifdef DEBUG
 #include <iostream>
+#endif
 
 namespace NetFlux {
 namespace Tcp
@@ -9,9 +12,9 @@ namespace Tcp
     bool Client::connectTo ( const std::string & host, uint16_t port )
     {
         // We convert the unsigned short port into C string.
-        char port_str [ 6 ];
-        int ret = snprintf ( port_str, 6, "%hu", port );
-        if ( ret < 0 || ret >= 6 )
+        char port_str [ PORT_LENGTH + 1 ];
+        int ret = snprintf ( port_str, PORT_LENGTH + 1, "%hu", port );
+        if ( ret < 0 || ret > PORT_LENGTH )
         {
 #ifdef DEBUG
             std::cout << "NetFlux::Tcp::Client::connectTo (snprintf): invalid return value ("

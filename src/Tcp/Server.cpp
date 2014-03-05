@@ -13,8 +13,16 @@ namespace Tcp
     bool Server::listen ( uint16_t port, int backlog )
     {
         // We convert the unsigned short port into C string.
-        char port_str [ 6 ];
-        int ret = snprintf ( port_str, 6, "%hu", port );
+        char port_str [ PORT_LENGTH + 1 ];
+        int ret = snprintf ( port_str, PORT_LENGTH + 1, "%hu", port );
+        if ( ret < 0 || ret > PORT_LENGTH )
+        {
+#ifdef DEBUG
+            std::cout << "NetFlux::Tcp::Server::listen (snprintf): invalid return value ("
+                << ret << ")";
+#endif
+            return false;
+        }
 
         // We give hints on what kinds of socket configs we are looking for.
         addrinfo hints;
