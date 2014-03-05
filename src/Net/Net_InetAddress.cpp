@@ -1,4 +1,4 @@
-#include "InetAddress.hpp"
+#include "Net_InetAddress.hpp"
 #include <sstream>
 
 namespace NetFlux {

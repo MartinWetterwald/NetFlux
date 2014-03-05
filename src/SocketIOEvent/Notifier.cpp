@@ -1,6 +1,6 @@
 #include "Notifier.hpp"
 #include "Event.hpp"
-#include "../Net/Socket.hpp"
+#include "../Net/Net_Socket.hpp"
 
 #if __unix__ || __posix__ || __linux__ || __APPLE__
 #include <sys/select.h>

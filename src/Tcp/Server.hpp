@@ -1,7 +1,7 @@
 #ifndef _TCP_SERVER_HPP_
 #define _TCP_SERVER_HPP_
 
-#include "../Net/Socket.hpp"
+#include "../Net/Net_Socket.hpp"
 
 namespace NetFlux
 {

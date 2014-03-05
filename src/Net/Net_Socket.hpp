@@ -1,7 +1,7 @@
 #ifndef _SOCKET_HPP_
 #define _SOCKET_HPP_
 
-#include "InetAddress.hpp"
+#include "Net_InetAddress.hpp"
 #include "../SocketIOEvent/Subscriber.hpp"
 #include "../SocketIOEvent/Notifier.hpp"
 

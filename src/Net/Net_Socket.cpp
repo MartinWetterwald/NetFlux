@@ -1,4 +1,4 @@
-#include "Socket.hpp"
+#include "Net_Socket.hpp"
 
 namespace NetFlux {
 namespace Net
