@@ -1,4 +1,4 @@
-#include "Subscriber.hpp"
+#include "SocketIOEvent_Subscriber.hpp"
 
 namespace NetFlux {
 namespace SocketIOEvent

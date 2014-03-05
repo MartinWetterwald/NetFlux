@@ -1,7 +1,7 @@
 #ifndef _SOCKET_IO_EVENT_SUBSCRIBER_HPP_
 #define _SOCKET_IO_EVENT_SUBSCRIBER_HPP_
 
-#include "Event.hpp"
+#include "SocketIOEvent_Event.hpp"
 
 namespace NetFlux
 {

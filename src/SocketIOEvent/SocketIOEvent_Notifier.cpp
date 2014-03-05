@@ -1,5 +1,5 @@
-#include "Notifier.hpp"
-#include "Event.hpp"
+#include "SocketIOEvent_Notifier.hpp"
+#include "SocketIOEvent_Event.hpp"
 #include "../Net/Net_Socket.hpp"
 
 #if __unix__ || __posix__ || __linux__ || __APPLE__
