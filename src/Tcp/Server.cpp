@@ -39,7 +39,7 @@ namespace Tcp
         SOCKET sockfd;
 
         // We try each config
-        for ( addrinfo * current = config_list ; current -> ai_next != 0 ; ++current )
+        for ( addrinfo * current = config_list ; current != 0 ; current = current -> ai_next )
         {
             sockfd = socket ( current -> ai_family, current -> ai_socktype, current -> ai_protocol );
             if ( sockfd == INVALID )
