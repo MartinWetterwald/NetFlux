@@ -67,7 +67,7 @@ namespace Tcp
                 continue;
             }
 
-            ret = bind ( sockfd, current -> ai_addr, sizeof ( sockaddr ) );
+            ret = bind ( sockfd, current -> ai_addr, current -> ai_addrlen );
             if ( ret == -1 )
             {
 #ifdef DEBUG
