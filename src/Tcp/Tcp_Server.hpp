@@ -12,7 +12,7 @@ namespace NetFlux
         public:
             virtual ~Server ( );
 
-            bool listen ( uint16_t port, int backlog = 10 );
+            bool listen ( uint16_t port, int family = AF_UNSPEC, int backlog = 10 );
 
             template <class SERVERSTREAM> SERVERSTREAM * accept ( )
             {

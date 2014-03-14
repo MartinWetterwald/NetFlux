@@ -10,7 +10,7 @@
 namespace NetFlux {
 namespace Tcp
 {
-    bool Server::listen ( uint16_t port, int backlog )
+    bool Server::listen ( uint16_t port, int family, int backlog )
     {
         // We convert the unsigned short port into C string.
         char port_str [ PORT_LENGTH + 1 ];
@@ -27,7 +27,7 @@ namespace Tcp
         // We give hints on what kinds of socket configs we are looking for.
         addrinfo hints;
         memset ( &hints, 0, sizeof ( addrinfo ) );
-        hints.ai_family = AF_UNSPEC;
+        hints.ai_family = family;
         hints.ai_socktype = SOCK_STREAM;
         hints.ai_protocol = IPPROTO_TCP;
         hints.ai_flags = ( AI_PASSIVE | AI_NUMERICSERV );
