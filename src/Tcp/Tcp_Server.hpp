@@ -42,7 +42,7 @@ namespace NetFlux
             Server ( ) = default;
             Server ( SOCKET sock, const InetAddress & address );
 
-            void timeoutEventAction ( );
+            bool timeoutEventAction ( );
         };
     }
 }

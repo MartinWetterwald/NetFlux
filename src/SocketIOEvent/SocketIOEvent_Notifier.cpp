@@ -107,8 +107,10 @@ namespace SocketIOEvent
                 {
                     if ( FD_ISSET ( current -> socket -> msocket, &readfds ) )
                     {
-                        current -> socket -> readEventAction ( );
-                        current -> lastActive = Utils::getUtime ( );
+                        if ( current -> socket -> readEventAction ( ) )
+                        {
+                            current -> lastActive = Utils::getUtime ( );
+                        }
                         if ( current != mpcurrent )
                         {
                             current = mpcurrent;
@@ -118,8 +120,10 @@ namespace SocketIOEvent
 
                     if ( FD_ISSET ( current -> socket -> msocket, &writefds ) )
                     {
-                        current -> socket -> writeEventAction ( );
-                        current -> lastActive = Utils::getUtime ( );
+                        if ( current -> socket -> writeEventAction ( ) )
+                        {
+                            current -> lastActive = Utils::getUtime ( );
+                        }
                         if ( current != mpcurrent )
                         {
                             current = mpcurrent;

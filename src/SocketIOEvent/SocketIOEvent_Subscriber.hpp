@@ -14,10 +14,10 @@ namespace NetFlux
             virtual ~Subscriber ( );
 
         protected:
-            virtual void readEventAction ( ) = 0;
-            virtual void writeEventAction ( ) = 0;
-            virtual void exceptEventAction ( ) = 0;
-            virtual void timeoutEventAction ( ) = 0;
+            virtual bool readEventAction ( ) = 0;
+            virtual bool writeEventAction ( ) = 0;
+            virtual bool exceptEventAction ( ) = 0;
+            virtual bool timeoutEventAction ( ) = 0;
 
             virtual void chooseSubscription ( Event & ) = 0;
         };
