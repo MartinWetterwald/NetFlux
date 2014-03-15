@@ -71,8 +71,8 @@ namespace SocketIOEvent
                 }
             }
 
-			t.tv_sec = ( unsigned int ) ( smallestTimeout / 1000000 );
-			t.tv_usec = ( unsigned int ) ( smallestTimeout - 1000000 * ( unsigned long ) t.tv_sec );
+            t.tv_sec = ( unsigned int ) ( smallestTimeout / 1000000 );
+            t.tv_usec = ( unsigned int ) ( smallestTimeout - 1000000 * ( unsigned long ) t.tv_sec );
 
             int ret = select ( maxfs + 1, &readfds, &writefds, &exceptfds, &t );
             if ( ret == -1 )
