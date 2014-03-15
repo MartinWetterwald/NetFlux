@@ -29,10 +29,6 @@ namespace NetFlux
             uint16_t mport;
 
             static const uint16_t PORT_LENGTH = 5;
-
-
-        private:
-            sockaddr msaddr;
         };
     }
 }
