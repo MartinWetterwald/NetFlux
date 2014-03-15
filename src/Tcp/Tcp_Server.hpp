@@ -21,9 +21,10 @@ namespace NetFlux
                     return nullptr;
                 }
 
-                sockaddr address;
-                socklen_t address_length = sizeof ( sockaddr );
-                SOCKET sockfd = ::accept ( msocket, &address, &address_length );
+                sockaddr_storage address;
+                socklen_t address_length = sizeof ( address );
+                SOCKET sockfd = ::accept ( msocket,
+                        reinterpret_cast <sockaddr *> ( &address ), &address_length );
 
                 if ( sockfd == -1 )
                 {
@@ -33,7 +34,7 @@ namespace NetFlux
                     return nullptr;
                 }
 
-                return new SERVERSTREAM ( sockfd, address );
+                return new SERVERSTREAM ( sockfd, &address );
             }
 
         protected:

@@ -4,17 +4,19 @@
 namespace NetFlux {
 namespace Net
 {
-    InetAddress::InetAddress ( const sockaddr & saddr )
+    InetAddress::InetAddress ( const sockaddr * saddr )
     {
-        fillAddress ( &saddr );
+        fillAddress ( saddr );
     }
 
-    InetAddress::InetAddress ( const sockaddr_in & sin )
-        : InetAddress ( reinterpret_cast <const sockaddr &> ( sin ) ) { }
+    InetAddress::InetAddress ( const sockaddr_in * sin )
+        : InetAddress ( reinterpret_cast <const sockaddr *> ( sin ) ) { }
 
+    InetAddress::InetAddress ( const sockaddr_in6 * sin6 )
+        : InetAddress ( reinterpret_cast <const sockaddr *> ( sin6 ) ) { }
 
-    InetAddress::InetAddress ( const sockaddr_in6 & sin6 )
-        : InetAddress ( reinterpret_cast <const sockaddr &> ( sin6 ) ) { }
+    InetAddress::InetAddress ( const sockaddr_storage * sstorage )
+        : InetAddress ( reinterpret_cast <const sockaddr *> ( sstorage ) ) { }
 
     InetAddress::~InetAddress ( ) { }
 
@@ -29,7 +31,7 @@ namespace Net
         {
             case AF_INET:
             {
-                const sockaddr_in * sin = reinterpret_cast <const sockaddr_in *> ( &psaddr );
+                const sockaddr_in * sin = reinterpret_cast <const sockaddr_in *> ( psaddr );
                 mip = inet_ntop ( psaddr -> sa_family, &sin -> sin_addr, dest, INET6_ADDRSTRLEN );
                 mport = ntohs ( reinterpret_cast <const sockaddr_in *> ( psaddr ) -> sin_port );
             }
