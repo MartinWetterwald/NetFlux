@@ -29,6 +29,10 @@ typedef int ssize_t;
 #ifdef DEBUG
 #include <cerrno>
 #include <cstdio>
+#else
+#define NDEBUG
 #endif
+
+#include <cassert>
 
 #endif
