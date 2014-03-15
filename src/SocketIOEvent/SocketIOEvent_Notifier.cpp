@@ -95,6 +95,11 @@ namespace SocketIOEvent
                     if ( Utils::getUtime ( ) > current -> lastActive + current -> timeout )
                     {
                         current -> socket -> timeoutEventAction ( );
+                        if ( current != mpcurrent )
+                        {
+                            current = mpcurrent;
+                            continue;
+                        }
                     }
                 }
 
@@ -172,6 +177,7 @@ namespace SocketIOEvent
         sock -> notifier = this;
         created -> socket = sock;
         created -> lastActive = Utils::getUtime ( );
+        created -> timeout = 0;
 
         return true;
     }
