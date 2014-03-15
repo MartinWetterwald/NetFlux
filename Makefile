@@ -65,7 +65,7 @@ endif
 
 -include $(DEP)
 
-all: mrproper $(LIB)
+all: mrproper default
 
 clean:
 	@echo "Cleaning..."
