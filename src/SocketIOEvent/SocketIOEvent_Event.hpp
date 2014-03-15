@@ -1,6 +1,9 @@
 #ifndef _SOCKET_IO_EVENT_EVENT_HPP_
 #define _SOCKET_IO_EVENT_EVENT_HPP_
 
+#include <cstdint>
+#include <ctime>
+
 namespace NetFlux
 {
     namespace SocketIOEvent
@@ -8,27 +11,40 @@ namespace NetFlux
         class Event
         {
         public:
-            Event ( ) : read ( false ), write ( false ), except ( false ) { }
+            Event ( ) :
+                mread ( false ),
+                mwrite ( false ),
+                mexcept ( false ),
+                mtimeout ( 0 ) { }
 
             inline void setRead ( )
             {
-                read = true;
+                mread = true;
             }
 
             inline void setWrite ( )
             {
-                write = true;
+                mwrite = true;
             }
 
             inline void setExcept ( )
             {
-                except = true;
+                mexcept = true;
             }
 
+            inline void setTimeout ( uint64_t timeout )
+            {
+                mtimeout = timeout;
+            }
+
+
         protected:
-            bool read;
-            bool write;
-            bool except;
+            bool mread;
+            bool mwrite;
+            bool mexcept;
+            uint64_t mtimeout;
+
+            static const uint32_t DEFAULT_TIMEOUT = 1000000;
 
             friend class Notifier;
         };

@@ -1,6 +1,8 @@
 #ifndef _SOCKET_IO_EVENT_NOTIFIER_HPP_
 #define _SOCKET_IO_EVENT_NOTIFIER_HPP_
 
+#include <cstdint>
+
 namespace NetFlux
 {
     namespace Net
@@ -31,6 +33,8 @@ namespace NetFlux
             {
                 SocketList * previous;
                 Net::Socket * socket;
+                uint64_t lastActive;
+                uint64_t timeout;
                 SocketList * next;
             };
 

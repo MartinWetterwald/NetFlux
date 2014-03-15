@@ -17,6 +17,7 @@ namespace NetFlux
             virtual void readEventAction ( ) = 0;
             virtual void writeEventAction ( ) = 0;
             virtual void exceptEventAction ( ) = 0;
+            virtual void timeoutEventAction ( ) = 0;
 
             virtual void chooseSubscription ( Event & ) = 0;
         };

@@ -106,4 +106,6 @@ namespace Tcp
     Server::~Server ( ) { }
 
     Server::Server ( SOCKET sock, const InetAddress & address ) : Socket ( sock, address ) { }
+
+    void Server::timeoutEventAction ( ) { }
 } }

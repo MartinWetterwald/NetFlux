@@ -37,9 +37,12 @@ namespace NetFlux
                 return new SERVERSTREAM ( sockfd, &address );
             }
 
+
         protected:
             Server ( ) = default;
             Server ( SOCKET sock, const InetAddress & address );
+
+            void timeoutEventAction ( );
         };
     }
 }

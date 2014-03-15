@@ -1,6 +1,7 @@
 #include "SocketIOEvent_Notifier.hpp"
 #include "SocketIOEvent_Event.hpp"
 #include "../Net/Net_Socket.hpp"
+#include "../Utils/Utils_Time.hpp"
 
 #if __unix__ || __posix__ || __linux__ || __APPLE__
 #include <sys/select.h>
@@ -32,9 +33,8 @@ namespace SocketIOEvent
         while ( running )
         {
             timeval t;
-            t.tv_sec = 1;
-            t.tv_usec = 0;
             int maxfs = 0;
+            uint64_t smallestTimeout = 1000000;
             fd_set readfds, writefds, exceptfds;
             FD_ZERO ( &readfds );
             FD_ZERO ( &writefds );
@@ -49,22 +49,30 @@ namespace SocketIOEvent
 
                 Event event;
                 current -> socket -> chooseSubscription ( event );
+                if ( event.mtimeout > 0 && event.mtimeout < smallestTimeout )
+                {
+                    smallestTimeout = event.mtimeout;
+                }
+                current -> timeout = event.mtimeout;
 
-                if ( event.read )
+                if ( event.mread )
                 {
                     FD_SET ( current -> socket -> msocket, &readfds );
                 }
 
-                if ( event.write )
+                if ( event.mwrite )
                 {
                     FD_SET ( current -> socket -> msocket, &writefds );
                 }
 
-                if ( event.except )
+                if ( event.mexcept )
                 {
                     FD_SET ( current -> socket -> msocket, &exceptfds );
                 }
             }
+
+			t.tv_sec = ( unsigned int ) ( smallestTimeout / 1000000 );
+			t.tv_usec = ( unsigned int ) ( smallestTimeout - 1000000 * ( unsigned long ) t.tv_sec );
 
             int ret = select ( maxfs + 1, &readfds, &writefds, &exceptfds, &t );
             if ( ret == -1 )
@@ -72,10 +80,6 @@ namespace SocketIOEvent
 #ifdef DEBUG
                 perror ( "NetFlux::SocketIOEvent::Notifier::startNotify (select)" );
 #endif
-            }
-            else if ( ret == 0 )
-            {
-                continue;
             }
 
             if ( ! running )
@@ -86,33 +90,46 @@ namespace SocketIOEvent
             SocketList * current = mpcurrent = mpfirst;
             while ( current )
             {
-                if ( FD_ISSET ( current -> socket -> msocket, &readfds ) )
+                if ( current -> timeout )
                 {
-                    current -> socket -> readEventAction ( );
-                    if ( current != mpcurrent )
+                    if ( Utils::getUtime ( ) > current -> lastActive + current -> timeout )
                     {
-                        current = mpcurrent;
-                        continue;
+                        current -> socket -> timeoutEventAction ( );
                     }
                 }
 
-                if ( FD_ISSET ( current -> socket -> msocket, &writefds ) )
+                if ( ret != 0 )
                 {
-                    current -> socket -> writeEventAction ( );
-                    if ( current != mpcurrent )
+                    if ( FD_ISSET ( current -> socket -> msocket, &readfds ) )
                     {
-                        current = mpcurrent;
-                        continue;
+                        current -> socket -> readEventAction ( );
+                        current -> lastActive = Utils::getUtime ( );
+                        if ( current != mpcurrent )
+                        {
+                            current = mpcurrent;
+                            continue;
+                        }
                     }
-                }
 
-                if ( FD_ISSET ( current -> socket -> msocket, &exceptfds ) )
-                {
-                    current -> socket -> exceptEventAction ( );
-                    if ( current != mpcurrent )
+                    if ( FD_ISSET ( current -> socket -> msocket, &writefds ) )
                     {
-                        current = mpcurrent;
-                        continue;
+                        current -> socket -> writeEventAction ( );
+                        current -> lastActive = Utils::getUtime ( );
+                        if ( current != mpcurrent )
+                        {
+                            current = mpcurrent;
+                            continue;
+                        }
+                    }
+
+                    if ( FD_ISSET ( current -> socket -> msocket, &exceptfds ) )
+                    {
+                        current -> socket -> exceptEventAction ( );
+                        if ( current != mpcurrent )
+                        {
+                            current = mpcurrent;
+                            continue;
+                        }
                     }
                 }
 
@@ -154,6 +171,7 @@ namespace SocketIOEvent
         mplast -> next = nullptr;
         sock -> notifier = this;
         created -> socket = sock;
+        created -> lastActive = Utils::getUtime ( );
 
         return true;
     }
