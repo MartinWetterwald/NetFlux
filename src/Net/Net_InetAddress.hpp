@@ -18,7 +18,8 @@ namespace NetFlux
             InetAddress ( const sockaddr_in * sin );
             InetAddress ( const sockaddr_in6 * sin6 );
             InetAddress ( const sockaddr_storage * sstorage );
-            virtual ~InetAddress ( );
+            InetAddress ( const InetAddress & ) = default;
+            virtual ~InetAddress ( ) = default;
 
             virtual void toString ( std::ostream & os ) const;
 
@@ -30,6 +31,9 @@ namespace NetFlux
             uint16_t mport;
 
             static const uint16_t PORT_LENGTH = 5;
+
+        private:
+            InetAddress & operator= ( const InetAddress & ) = delete;
         };
     }
 }

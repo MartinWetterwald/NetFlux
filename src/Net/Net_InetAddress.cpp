@@ -18,8 +18,6 @@ namespace Net
     InetAddress::InetAddress ( const sockaddr_storage * sstorage )
         : InetAddress ( reinterpret_cast <const sockaddr *> ( sstorage ) ) { }
 
-    InetAddress::~InetAddress ( ) { }
-
 
     void InetAddress::fillAddress ( const sockaddr * psaddr )
     {
