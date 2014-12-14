@@ -90,7 +90,7 @@ namespace NetFlux
                     }
                     else
                     {
-                        backCursor = dataSize - readedSize;
+                        backCursor += dataSize - readedSize;
                     }
                     break;
                 }
