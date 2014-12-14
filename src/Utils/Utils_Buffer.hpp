@@ -9,12 +9,12 @@ namespace NetFlux
         class Buffer
         {
         public:
-            Buffer ( )
+            Buffer ( ) :
+                mpbegin ( nullptr ),
+                mpend ( nullptr ),
+                frontCursor ( 0 ),
+                backCursor ( 0 )
             {
-                mpbegin = nullptr;
-                mpend = nullptr;
-                frontCursor = 0;
-                backCursor = 0;
             }
 
             ~Buffer ( )
@@ -139,6 +139,7 @@ namespace NetFlux
 
         private:
             Buffer ( const Buffer & ) = delete;
+            Buffer & operator= ( const Buffer & ) = delete;
         };
     }
 }
