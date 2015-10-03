@@ -1,5 +1,5 @@
-#ifndef _TCP_SERVER_STREAM_HPP_
-#define _TCP_SERVER_STREAM_HPP_
+#ifndef TCP_SERVER_STREAM_HPP_
+#define TCP_SERVER_STREAM_HPP_
 
 #include "../Net/Net_Socket.hpp"
 

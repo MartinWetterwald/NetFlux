@@ -1,5 +1,5 @@
-#ifndef _UDP_CLIENT_HPP_
-#define _UDP_CLIENT_HPP_
+#ifndef UDP_CLIENT_HPP_
+#define UDP_CLIENT_HPP_
 
 #include "../Net/Net_Socket.hpp"
 

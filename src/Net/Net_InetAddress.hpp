@@ -1,5 +1,5 @@
-#ifndef _INET_ADDRESS_HPP_
-#define _INET_ADDRESS_HPP_
+#ifndef INET_ADDRESS_HPP_
+#define INET_ADDRESS_HPP_
 
 #include "../libs.hpp"
 

@@ -1,5 +1,5 @@
-#ifndef _SOCKET_IO_EVENT_EVENT_HPP_
-#define _SOCKET_IO_EVENT_EVENT_HPP_
+#ifndef SOCKET_IO_EVENT_EVENT_HPP_
+#define SOCKET_IO_EVENT_EVENT_HPP_
 
 #include <cstdint>
 #include <ctime>

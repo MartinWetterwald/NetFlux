@@ -1,5 +1,5 @@
-#ifndef _SOCKET_HPP_
-#define _SOCKET_HPP_
+#ifndef SOCKET_HPP_
+#define SOCKET_HPP_
 
 #include "Net_InetAddress.hpp"
 #include "../SocketIOEvent/SocketIOEvent_Subscriber.hpp"

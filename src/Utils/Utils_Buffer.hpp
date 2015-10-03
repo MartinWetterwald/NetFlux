@@ -1,5 +1,5 @@
-#ifndef _UTILS_BUFFER_HPP_
-#define _UTILS_BUFFER_HPP_
+#ifndef UTILS_BUFFER_HPP_
+#define UTILS_BUFFER_HPP_
 
 namespace NetFlux
 {

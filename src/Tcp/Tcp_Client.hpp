@@ -1,5 +1,5 @@
-#ifndef _TCP_CLIENT_HPP_
-#define _TCP_CLIENT_HPP_
+#ifndef TCP_CLIENT_HPP_
+#define TCP_CLIENT_HPP_
 
 #include "../Net/Net_Socket.hpp"
 

@@ -1,5 +1,5 @@
-#ifndef _LIBS_HPP_
-#define _LIBS_HPP_
+#ifndef LIBS_HPP_
+#define LIBS_HPP_
 
 #if __unix__ || __posix__ || __linux__ || __APPLE__
 #include <sys/socket.h> // socket
